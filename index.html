@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JYM LACAYANGA — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat:wght@600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FFFAF0;
+    --bg2: #FFF5E0;
+    --surface: #F5EDD8;
+    --border: #e0d4b8;
+    --text: #1a1a1a;
+    --muted: #7a6e5a;
+    --accent1: #FF6B00; /* orange */
+    --accent2: #FFCC00; /* yellow — display/accent only */
+    --accent3: #FF6B00; /* orange secondary */
+    --accent4: #e6b800; /* deep yellow */
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-mono: 'Space Mono', monospace;
+    --font-body: 'DM Sans', sans-serif;
+    --font-script: 'Caveat', cursive;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  section, footer { scroll-margin-top: 80px; }
+
+  html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+  }
+
+  /* NOISE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9990;
+    opacity: 0.35;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s, background 0.3s;
+  }
+  nav.scrolled {
+    background: rgba(255,250,240,0.95);
+    border-color: var(--border);
+    backdrop-filter: blur(12px);
+  }
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    letter-spacing: 0.08em;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--accent2); }
+  .nav-links {
+    display: flex; gap: 32px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent2); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 40px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 75% 30%, rgba(255,107,0,0.10) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 20% 70%, rgba(255,204,0,0.12) 0%, transparent 55%),
+      radial-gradient(ellipse 50% 60% at 50% 50%, rgba(255,107,0,0.05) 0%, transparent 70%);
+  }
+
+  .hero-ticker {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
+    overflow: hidden;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0.04;
+  }
+  .hero-ticker-inner {
+    display: inline-block;
+    animation: ticker 18s linear infinite;
+    font-family: var(--font-display);
+    font-size: clamp(120px, 18vw, 220px);
+    letter-spacing: -0.01em;
+    color: var(--text);
+  }
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  .hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent3);
+    margin-bottom: 16px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    animation: fadeUp 0.8s ease both 0.2s;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    width: 40px; height: 1px;
+    background: var(--accent3);
+  }
+
+  .hero-name {
+    font-family: var(--font-display);
+    font-size: clamp(72px, 12vw, 180px);
+    line-height: 0.9;
+    letter-spacing: -0.01em;
+    position: relative;
+    animation: fadeUp 0.8s ease both 0.35s;
+  }
+  .hero-name .line1 { display: block; color: var(--text); }
+  .hero-name .line2 { display: block; color: var(--accent2); -webkit-text-stroke: 0px; }
+  .hero-name .line3 { display: block; font-family: var(--font-script); font-size: clamp(56px, 9vw, 136px); color: var(--accent1); -webkit-text-stroke: 0px; -webkit-text-fill-color: var(--accent1); line-height: 1.05; letter-spacing: -0.01em; }
+
+  .hero-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 32px;
+    animation: fadeUp 0.8s ease both 0.5s;
+  }
+  .hero-role {
+    font-family: var(--font-body);
+    font-size: clamp(13px, 1.4vw, 16px);
+    font-weight: 300;
+    color: var(--muted);
+    max-width: 320px;
+    line-height: 1.6;
+  }
+  .hero-role strong { color: var(--text); font-weight: 500; }
+
+  .hero-tagline {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 3.5vw, 52px);
+    letter-spacing: 0.04em;
+    color: var(--accent1);
+    text-align: right;
+  }
+
+  .scroll-indicator {
+    position: absolute;
+    bottom: 0;
+    right: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    animation: fadeUp 1s ease both 1s;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+  }
+  .scroll-indicator span {
+    display: none;
+  }
+  .scroll-line {
+    width: 1px; height: 80px;
+    background: linear-gradient(to bottom, var(--accent1), transparent);
+    animation: scrollPulse 1.8s ease-in-out infinite;
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(1.2); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* SECTION SHARED */
+  section { padding: 100px 40px; }
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent3);
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(48px, 7vw, 100px);
+    line-height: 0.95;
+    letter-spacing: 0.01em;
+    margin-bottom: 60px;
+  }
+
+  /* PORTFOLIO SECTION */
+  #portfolio { background: var(--bg); }
+
+  /* FILTER TABS */
+  .filter-bar {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 48px;
+    flex-wrap: wrap;
+  }
+  .filter-btn {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 8px 20px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .filter-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--accent2);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s ease;
+    z-index: 0;
+  }
+  .filter-btn span { position: relative; z-index: 1; }
+  .filter-btn:hover { border-color: var(--accent2); color: var(--bg); }
+  .filter-btn:hover::before { transform: scaleX(1); }
+  .filter-btn.active { background: var(--accent2); border-color: var(--accent2); color: var(--bg); }
+  .filter-btn.active::before { transform: scaleX(1); }
+
+  /* MASONRY GRID */
+  .portfolio-grid {
+    columns: 3;
+    column-gap: 12px;
+  }
+  @media (max-width: 1024px) { .portfolio-grid { columns: 2; } }
+  @media (max-width: 600px) { .portfolio-grid { columns: 1; } }
+
+  .portfolio-item {
+    break-inside: avoid;
+    margin-bottom: 12px;
+    position: relative;
+    overflow: hidden;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: transform 0.35s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.35s ease;
+  }
+  .portfolio-item:hover {
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px var(--accent2);
+    z-index: 10;
+  }
+
+  .portfolio-item .media-wrap {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+  .portfolio-item img,
+  .portfolio-item video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .portfolio-item:hover img,
+  .portfolio-item:hover video { transform: scale(1.05); }
+
+  /* PLACEHOLDER ITEMS */
+  .placeholder-media {
+    width: 100%;
+    background: var(--surface);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    border: 1px dashed var(--border);
+    transition: border-color 0.2s;
+    padding: 40px 20px;
+  }
+  .placeholder-media .ph-icon {
+    font-size: 2rem;
+    opacity: 0.3;
+  }
+  .portfolio-item:hover .placeholder-media {
+    border-color: var(--accent2);
+  }
+
+  .item-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(8,8,8,0.9) 0%, rgba(8,8,8,0.2) 50%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 20px;
+  }
+  .portfolio-item:hover .item-overlay { opacity: 1; }
+
+  .item-title {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    letter-spacing: 0.04em;
+    color: var(--text);
+    line-height: 1;
+    transform: translateY(10px);
+    transition: transform 0.3s ease;
+  }
+  .portfolio-item:hover .item-title { transform: translateY(0); }
+
+  .item-meta {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-top: 4px;
+    transform: translateY(10px);
+    transition: transform 0.3s ease 0.04s;
+  }
+  .portfolio-item:hover .item-meta { transform: translateY(0); }
+
+  .tag-video { color: var(--accent1); }
+  .tag-motion { color: var(--accent4); }
+  .tag-gif { color: var(--accent3); }
+  .tag-image { color: var(--accent2); }
+
+  .item-play-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.7);
+    width: 52px; height: 52px;
+    background: rgba(255,204,0,0.15);
+    border: 1.5px solid var(--accent2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+  }
+  .item-play-btn svg { margin-left: 3px; }
+  .portfolio-item:hover .item-play-btn {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  #fileInput { display: none; }
+
+  /* ABOUT SECTION */
+  #about {
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .about-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+  @media (max-width: 800px) { .about-layout { grid-template-columns: 1fr; gap: 40px; } }
+
+  .about-text {
+    font-size: clamp(15px, 1.5vw, 18px);
+    line-height: 1.75;
+    color: var(--muted);
+    font-weight: 300;
+  }
+  .about-text p { margin-bottom: 20px; }
+  .about-text strong { color: var(--text); font-weight: 500; }
+  .about-text .placeholder-note {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--accent3);
+    opacity: 0.6;
+    border-left: 2px solid var(--accent3);
+    padding-left: 12px;
+    margin-top: 32px;
+  }
+
+  .about-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+  }
+  .stat-box {
+    background: var(--surface);
+    padding: 28px 24px;
+    border: 1px solid var(--border);
+    transition: border-color 0.2s;
+  }
+  .stat-box:hover { border-color: var(--accent2); }
+  .stat-num {
+    font-family: var(--font-display);
+    font-size: 3.5rem;
+    letter-spacing: 0.02em;
+    line-height: 1;
+    color: var(--accent2);
+    margin-bottom: 4px;
+  }
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* CV SECTION */
+  #cv {
+    background: var(--bg);
+  }
+  .cv-placeholder {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 60px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    min-height: 300px;
+    text-align: center;
+    transition: border-color 0.2s;
+  }
+  .cv-placeholder:hover { border-color: var(--accent3); }
+  .cv-icon {
+    font-size: 3rem;
+    opacity: 0.2;
+  }
+  .cv-placeholder h3 {
+    font-family: var(--font-display);
+    font-size: 2.2rem;
+    letter-spacing: 0.06em;
+  }
+  .cv-placeholder p {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    max-width: 400px;
+  }
+  .cv-upload-btn {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 12px 32px;
+    border: 1px solid var(--accent3);
+    background: transparent;
+    color: var(--accent3);
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 8px;
+  }
+  .cv-upload-btn:hover {
+    background: var(--accent3);
+    color: var(--bg);
+  }
+
+  /* CONTACT / FOOTER */
+  footer {
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+    padding: 80px 40px 40px;
+  }
+  .footer-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 60px;
+    flex-wrap: wrap;
+    gap: 40px;
+  }
+  .footer-title {
+    font-family: var(--font-display);
+    font-size: clamp(60px, 10vw, 140px);
+    line-height: 0.9;
+    letter-spacing: -0.01em;
+  }
+  .footer-title span { color: var(--accent1); }
+  .footer-contact {
+    text-align: right;
+  }
+  .footer-contact p {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .footer-contact a {
+    font-family: var(--font-body);
+    font-size: clamp(14px, 1.5vw, 18px);
+    color: var(--text);
+    text-decoration: none;
+    display: block;
+    margin-bottom: 4px;
+    transition: color 0.2s;
+  }
+  .footer-contact a:hover { color: var(--accent2); }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--border);
+    padding-top: 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .footer-copy {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .footer-socials {
+    display: flex;
+    gap: 20px;
+  }
+  .footer-socials a {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-socials a:hover { color: var(--accent2); }
+
+  /* LIGHTBOX */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(255,250,240,0.98);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    backdrop-filter: blur(12px);
+  }
+  .lightbox.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .lightbox-content {
+    max-width: 90vw;
+    max-height: 90vh;
+    position: relative;
+    transform: scale(0.95);
+    transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .lightbox.open .lightbox-content { transform: scale(1); }
+  .lightbox-content img,
+  .lightbox-content video {
+    max-width: 90vw;
+    max-height: 82vh;
+    object-fit: contain;
+    display: block;
+  }
+  .lightbox-meta {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .lightbox-title {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    letter-spacing: 0.06em;
+  }
+  .lightbox-type {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .lightbox-close {
+    position: fixed;
+    top: 30px; right: 40px;
+    width: 44px; height: 44px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: var(--font-mono);
+  }
+  .lightbox-close:hover {
+    border-color: var(--accent1);
+    color: var(--accent1);
+  }
+
+  /* HIDE FILTER ITEMS */
+  .portfolio-item.hidden {
+    display: none;
+  }
+
+  /* INTRO ANIM */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-content" id="lightboxContent"></div>
+  <button class="lightbox-close" id="lightboxClose">✕</button>
+</div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">JYMLACS</a>
+  <ul class="nav-links">
+    <li><a href="#portfolio">Work</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#cv">CV</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-ticker">
+    <span class="hero-ticker-inner">MOTION GRAPHICS — VIDEO EDITING — CREATIVE — MOTION GRAPHICS — VIDEO EDITING — CREATIVE — </span>
+  </div>
+
+  
+
+  <h1 class="hero-name">
+    <span class="line1">JYM</span>
+    <span class="line2">LACAYANGA</span>
+    <span class="line3">I MAKE THINGS MOVE</span>
+  </h1>
+
+  <div class="scroll-indicator">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section id="portfolio">
+  <div class="section-label">Selected Work</div>
+  <h2 class="section-title reveal">THE WORK</h2>
+
+  <div class="filter-bar reveal">
+    <button class="filter-btn active" data-filter="all"><span>All</span></button>
+    <button class="filter-btn" data-filter="video"><span>Video</span></button>
+    <button class="filter-btn" data-filter="motion"><span>Motion Graphics</span></button>
+    <button class="filter-btn" data-filter="gif"><span>GIF</span></button>
+    <button class="filter-btn" data-filter="image"><span>Image</span></button>
+  </div>
+
+  <div class="portfolio-grid" id="portfolioGrid">
+    <div class="portfolio-item" data-type="gif" data-title="MOTION GRAPHICS 1" data-src="https://jymlacayanga8-glitch.github.io/portfolio/assets/gifs/1_MG.gif">
+      <div class="media-wrap">
+        <img src="https://jymlacayanga8-glitch.github.io/portfolio/assets/gifs/1_MG.gif" alt="MOTION GRAPHICS 1" loading="lazy">
+        <div class="item-overlay">
+          <div class="item-title">MOTION GRAPHICS 1</div>
+          <div class="item-meta tag-gif">Motion Graphics</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="portfolio-item" data-type="gif" data-title="MOTION GRAPHICS 2" data-src="https://jymlacayanga8-glitch.github.io/portfolio/assets/gifs/2_MG.gif">
+      <div class="media-wrap">
+        <img src="https://jymlacayanga8-glitch.github.io/portfolio/assets/gifs/2_MG.gif" alt="MOTION GRAPHICS 2" loading="lazy">
+        <div class="item-overlay">
+          <div class="item-title">MOTION GRAPHICS 2</div>
+          <div class="item-meta tag-gif">Motion Graphics</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="portfolio-item" data-type="gif" data-title="MOTION GRAPHICS 3" data-src="https://jymlacayanga8-glitch.github.io/portfolio/assets/gifs/3_MG.gif">
+      <div class="media-wrap">
+        <img src="https://jymlacayanga8-glitch.github.io/portfolio/assets/gifs/3_MG.gif" alt="MOTION GRAPHICS 3" loading="lazy">
+        <div class="item-overlay">
+          <div class="item-title">MOTION GRAPHICS 3</div>
+          <div class="item-meta tag-gif">Motion Graphics</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="portfolio-item" data-type="gif" data-title="MOTION GRAPHICS 4" data-src="https://jymlacayanga8-glitch.github.io/portfolio/assets/gifs/4_MG.gif">
+      <div class="media-wrap">
+        <img src="https://jymlacayanga8-glitch.github.io/portfolio/assets/gifs/4_MG.gif" alt="MOTION GRAPHICS 4" loading="lazy">
+        <div class="item-overlay">
+          <div class="item-title">MOTION GRAPHICS 4</div>
+          <div class="item-meta tag-gif">Motion Graphics</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="portfolio-item" data-type="gif" data-title="MOTION GRAPHICS 5" data-src="https://jymlacayanga8-glitch.github.io/portfolio/assets/gifs/5_MG.gif">
+      <div class="media-wrap">
+        <img src="https://jymlacayanga8-glitch.github.io/portfolio/assets/gifs/5_MG.gif" alt="MOTION GRAPHICS 5" loading="lazy">
+        <div class="item-overlay">
+          <div class="item-title">MOTION GRAPHICS 5</div>
+          <div class="item-meta tag-gif">Motion Graphics</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="portfolio-item" data-type="gif" data-title="MOTION GRAPHICS 6" data-src="https://jymlacayanga8-glitch.github.io/portfolio/assets/gifs/6_MG.gif">
+      <div class="media-wrap">
+        <img src="https://jymlacayanga8-glitch.github.io/portfolio/assets/gifs/6_MG.gif" alt="MOTION GRAPHICS 6" loading="lazy">
+        <div class="item-overlay">
+          <div class="item-title">MOTION GRAPHICS 6</div>
+          <div class="item-meta tag-gif">Motion Graphics</div>
+        </div>
+      </div>
+    </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">Who I Am</div>
+  <h2 class="section-title reveal">ABOUT</h2>
+  <div class="about-layout">
+    <div class="about-text reveal">
+      <p><strong>Jym Yzykyl C. Lacayanga</strong> is a <strong>Creative Video Editor</strong> and <strong>Motion Graphics Artist</strong> based in the Philippines.</p>
+      <p>With a background in Technology Communication Management at <strong>USTP</strong>, Jym bridges the gap between storytelling and visual design — crafting work that not only looks good, but communicates with purpose.</p>
+      <p>Specializing in motion graphics, video editing, and multimedia production, Jym's work spans explainer videos, brand visuals, and digital content — all built around one simple belief: <em>things that move, speak louder.</em></p>
+      <div class="placeholder-note">// About Me content pending — drop your text or doc here to update.</div>
+    </div>
+    <div class="about-stats reveal">
+      <div class="stat-box">
+        <div class="stat-num">4+</div>
+        <div class="stat-label">Years in Production</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">—</div>
+        <div class="stat-label">Projects Completed</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">MG</div>
+        <div class="stat-label">Motion Graphics</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">PH</div>
+        <div class="stat-label">Based in Philippines</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CV -->
+<section id="cv">
+  <div class="section-label">Credentials</div>
+  <h2 class="section-title reveal">CV & RESUME</h2>
+  <div class="cv-placeholder reveal">
+    <div class="cv-icon">📄</div>
+    <h3>YOUR CV GOES HERE</h3>
+    <p>Upload your CV or resume document and it will be embedded and downloadable directly from this section.</p>
+    <button class="cv-upload-btn" onclick="document.getElementById('cvInput').click()">+ UPLOAD CV / RESUME</button>
+    <input type="file" id="cvInput" accept=".pdf,.doc,.docx" style="display:none">
+  </div>
+</section>
+
+<!-- FOOTER / CONTACT -->
+<footer id="contact">
+  <div class="footer-top">
+    <div class="footer-title">
+      LET'S<br><span>WORK.</span>
+    </div>
+    <div class="footer-contact">
+      <p>Get in touch</p>
+      <a href="mailto:your@email.com">your@email.com</a>
+      <a href="#">LinkedIn</a>
+      <a href="#">Behance / Portfolio</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 Jym Yzykyl C. Lacayanga — All Rights Reserved</div>
+    <div class="footer-socials">
+      <a href="#">Instagram</a>
+      <a href="#">LinkedIn</a>
+      <a href="#">Behance</a>
+      <a href="#">YouTube</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ─── NAVBAR SCROLL ────────────────────────────────────
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// ─── REVEAL ON SCROLL ─────────────────────────────────
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.15 });
+reveals.forEach(r => observer.observe(r));
+
+// ─── FILTER TABS ──────────────────────────────────────
+const filterBtns = document.querySelectorAll('.filter-btn');
+const items = document.querySelectorAll('.portfolio-item');
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    filterBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter = btn.dataset.filter;
+    items.forEach(item => {
+      if (filter === 'all' || item.dataset.type === filter) {
+        item.classList.remove('hidden');
+      } else {
+        item.classList.add('hidden');
+      }
+    });
+  });
+});
+
+// ─── LIGHTBOX ─────────────────────────────────────────
+const lightbox = document.getElementById('lightbox');
+const lightboxContent = document.getElementById('lightboxContent');
+const lightboxClose = document.getElementById('lightboxClose');
+
+function openLightbox(el) {
+  const type = el.dataset.type;
+  const title = el.dataset.title || '';
+  const src = el.dataset.src;
+  let html = '';
+  if (!src) {
+    lightboxContent.innerHTML = `
+      <div style="text-align:center; padding: 60px 40px; font-family: var(--font-mono); color: var(--muted); font-size:0.7rem; letter-spacing:0.12em;">
+        NO MEDIA FILE ATTACHED YET<br><br>
+        <span style="color:var(--accent2); font-size:0.6rem;">Upload your file to see it here</span>
+      </div>
+      <div class="lightbox-meta">
+        <div class="lightbox-title">${title}</div>
+        <div class="lightbox-type tag-${type}">${type.toUpperCase()}</div>
+      </div>`;
+  } else if (type === 'video' || type === 'motion') {
+    html = `<video src="${src}" controls autoplay style="max-width:90vw;max-height:82vh;"></video>
+    <div class="lightbox-meta"><div class="lightbox-title">${title}</div><div class="lightbox-type tag-${type}">${type.toUpperCase()}</div></div>`;
+    lightboxContent.innerHTML = html;
+  } else {
+    html = `<img src="${src}" alt="${title}" />
+    <div class="lightbox-meta"><div class="lightbox-title">${title}</div><div class="lightbox-type tag-${type}">${type.toUpperCase()}</div></div>`;
+    lightboxContent.innerHTML = html;
+  }
+  lightbox.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  lightbox.classList.remove('open');
+  document.body.style.overflow = '';
+  lightboxContent.innerHTML = '';
+}
+
+items.forEach(item => {
+  item.addEventListener('click', () => openLightbox(item));
+});
+lightboxClose.addEventListener('click', closeLightbox);
+lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+// CV Upload
+document.getElementById('cvInput').addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const url = URL.createObjectURL(file);
+  const cvSection = document.querySelector('.cv-placeholder');
+  cvSection.innerHTML = `
+    <div class="cv-icon">✓</div>
+    <h3>${file.name.replace(/\.[^/.]+$/, '').toUpperCase()}</h3>
+    <p>Your document has been loaded. Click below to download.</p>
+    <a href="${url}" download="${file.name}" style="font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;padding:12px 32px;border:1px solid var(--accent2);background:transparent;color:var(--accent2);text-decoration:none;display:inline-block;margin-top:8px;transition:all 0.2s;">↓ DOWNLOAD ${file.name.split('.').pop().toUpperCase()}</a>`;
+});
+</script>
+</body>
+</html>
